@@ -1,5 +1,6 @@
-import { signIn } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { useState, type ChangeEvent, type FormEvent } from "react";
+import { Button } from "~/components/Button";
 import { FormGroup } from "~/components/FormGroup";
 import { Input } from "~/components/Input";
 import { api } from "~/utils/api";
@@ -31,15 +32,32 @@ export default function Generate() {
     });
   };
 
+  const session = useSession();
+
+  const isLoggedIn = !!session.data;
+
   return (
     <main className=" flex min-h-screen flex-col items-center justify-center">
-      <button
-        onClick={() => {
-          signIn().catch(console.error);
-        }}
-      >
-        Login
-      </button>
+      {!isLoggedIn && (
+        <Button
+          onClick={() => {
+            signIn().catch(console.error);
+          }}
+        >
+          Login
+        </Button>
+      )}
+
+      {isLoggedIn && (
+        <Button
+          onClick={() => {
+            signOut().catch(console.error);
+          }}
+        >
+          Log out
+        </Button>
+      )}
+
       <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
         <h1 className="text-5xl font-extrabold tracking-tight  sm:text-[5rem]">
           Generate
@@ -53,9 +71,9 @@ export default function Generate() {
               onChange={updateForm("prompt")}
             />
           </FormGroup>
-          <button className="rounded bg-blue-400 px-4 py-2 hover:bg-blue-500">
+          <Button className="rounded bg-blue-400 px-4 py-2 hover:bg-blue-500">
             Generate
-          </button>
+          </Button>
         </form>
       </div>
     </main>
