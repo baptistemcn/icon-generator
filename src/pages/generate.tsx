@@ -1,4 +1,5 @@
 import { signIn, signOut, useSession } from "next-auth/react";
+import Image from "next/image";
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import { Button } from "~/components/Button";
 import { FormGroup } from "~/components/FormGroup";
@@ -38,7 +39,15 @@ export default function Generate() {
 
   return (
     <main className=" flex min-h-screen flex-col items-center justify-center">
-      {!isLoggedIn && (
+      {isLoggedIn ? (
+        <Button
+          onClick={() => {
+            signOut().catch(console.error);
+          }}
+        >
+          Log out
+        </Button>
+      ) : (
         <Button
           onClick={() => {
             signIn().catch(console.error);
@@ -48,20 +57,23 @@ export default function Generate() {
         </Button>
       )}
 
-      {isLoggedIn && (
-        <Button
-          onClick={() => {
-            signOut().catch(console.error);
-          }}
-        >
-          Log out
-        </Button>
-      )}
-
       <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
         <h1 className="text-5xl font-extrabold tracking-tight  sm:text-[5rem]">
           Generate
         </h1>
+        {isLoggedIn && (
+          <div className="flew-row flex items-center gap-2">
+            <span>Hello,</span>
+            <Image
+              src={session.data.user.image!}
+              alt={session.data.user.name!}
+              className="rounded"
+              height={24}
+              width={24}
+            />
+            <span className="text-xl font-bold">{session.data.user.name}</span>
+          </div>
+        )}
         <form className="flex flex-col gap-4" onSubmit={handleFormSubmit}>
           <FormGroup>
             <label>Prompt</label>
