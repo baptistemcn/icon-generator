@@ -10,6 +10,7 @@ export default function Generate() {
   const [form, setForm] = useState({
     prompt: "",
   });
+  const [imageUrl, setImageUrl] = useState("");
 
   const updateForm = (key: string) => {
     return function (e: ChangeEvent<HTMLInputElement>) {
@@ -22,7 +23,8 @@ export default function Generate() {
 
   const generateIcon = api.generate.generatIcon.useMutation({
     onSuccess(data) {
-      console.log("mutation finished", data);
+      if (!data.imageUrl) return;
+      setImageUrl(data.imageUrl);
     },
   });
 
@@ -87,6 +89,14 @@ export default function Generate() {
             Generate
           </Button>
         </form>
+        {imageUrl && (
+          <Image
+            src={`data:image/png;base64,${imageUrl}`}
+            width="100"
+            height="100"
+            alt={""}
+          />
+        )}
       </div>
     </main>
   );
