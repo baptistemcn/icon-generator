@@ -4,6 +4,7 @@ import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 import OpenAI from "openai";
+import AWS from "aws-sdk";
 
 import { env } from "~/env";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
@@ -11,6 +12,14 @@ import { b64Image } from "~/data/image";
 
 const openai = new OpenAI({
   apiKey: env.OPENAI_API_KEY,
+});
+
+const s3 = new AWS.S3({
+  credentials: {
+    accessKeyId: env.ACCESS_KEY_ID,
+    secretAccessKey: env.SECRET_ACCESS_KEY,
+  },
+  region: "us-east-1",
 });
 
 async function generateIcon(prompt: string): Promise<string | undefined> {
@@ -61,6 +70,16 @@ export const generateRouter = createTRPCRouter({
       const finalPrompt = input.prompt;
 
       const base64EncodedImages = await generateIcon(finalPrompt);
+
+      await s3
+        .putObject({
+          Bucket: "icon-generator-baptistemcn",
+          Body: Buffer.from(base64EncodedImages!, "base64"),
+          Key: "my-image-png",
+          ContentEncoding: "base64",
+          ContentType: "image/png",
+        })
+        .promise();
 
       return {
         imageUrl: base64EncodedImages,

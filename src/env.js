@@ -32,6 +32,8 @@ export const env = createEnv({
     GOOGLE_CLEINT_SECRET: z.string(),
     OPENAI_API_KEY: z.string(),
     MOCK_DALLE: z.string(),
+    SECRET_ACCESS_KEY: z.string(),
+    ACCESS_KEY_ID: z.string(),
   },
 
   /**
@@ -56,6 +58,8 @@ export const env = createEnv({
     GOOGLE_CLEINT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
     OPENAI_API_KEY: process.env.OPENAI_API_KEY,
     MOCK_DALLE: process.env.MOCK_DALLE,
+    ACCESS_KEY_ID: process.env.ACCESS_KEY_ID,
+    SECRET_ACCESS_KEY: process.env.SECRET_ACCESS_KEY,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
