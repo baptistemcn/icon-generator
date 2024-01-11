@@ -23,6 +23,8 @@ const s3 = new AWS.S3({
   region: "us-east-1",
 });
 
+const BUCKET_NAME = "icon-generator-baptistemcn";
+
 async function generateIcon(prompt: string): Promise<string | undefined> {
   if (env.MOCK_DALLE === "false") {
     const response = await openai.images.generate({
@@ -81,7 +83,7 @@ export const generateRouter = createTRPCRouter({
 
       await s3
         .putObject({
-          Bucket: "icon-generator-baptistemcn",
+          Bucket: BUCKET_NAME,
           Body: Buffer.from(base64EncodedImages!, "base64"),
           Key: icon.id,
           ContentEncoding: "base64",
@@ -90,7 +92,7 @@ export const generateRouter = createTRPCRouter({
         .promise();
 
       return {
-        imageUrl: base64EncodedImages,
+        imageUrl: `https://${BUCKET_NAME}.s3.eu-north-1.amazonaws.com/${icon.id}`,
       };
     }),
 });

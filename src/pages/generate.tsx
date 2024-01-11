@@ -89,14 +89,7 @@ export default function Generate() {
             Generate
           </Button>
         </form>
-        {imageUrl && (
-          <Image
-            src={`data:image/png;base64,${imageUrl}`}
-            width="100"
-            height="100"
-            alt={""}
-          />
-        )}
+        {imageUrl && <Image src={imageUrl} width="100" height="100" alt={""} />}
       </div>
     </main>
   );

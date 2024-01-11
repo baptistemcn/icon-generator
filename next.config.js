@@ -24,6 +24,11 @@ const config = {
         hostname: "lh3.googleusercontent.com",
         port: "",
       },
+      {
+        protocol: "https",
+        hostname: "icon-generator-baptistemcn.s3.eu-north-1.amazonaws.com",
+        port: "",
+      },
     ],
   },
 };
