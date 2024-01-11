@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
@@ -71,11 +72,18 @@ export const generateRouter = createTRPCRouter({
 
       const base64EncodedImages = await generateIcon(finalPrompt);
 
+      const icon = await ctx.db.icon.create({
+        data: {
+          prompt: input.prompt,
+          userId: ctx.session.user.id,
+        },
+      });
+
       await s3
         .putObject({
           Bucket: "icon-generator-baptistemcn",
           Body: Buffer.from(base64EncodedImages!, "base64"),
-          Key: "my-image-png",
+          Key: icon.id,
           ContentEncoding: "base64",
           ContentType: "image/png",
         })
