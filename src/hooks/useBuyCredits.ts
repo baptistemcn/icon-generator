@@ -4,7 +4,6 @@ import { api } from "~/utils/api";
 
 const apiKey =
   "pk_test_51OXmO0JXph72ud7d8eKS9GcaX4StxXVoUt3BsOpDVH2g3xqcWfkRCdSgcr4X6cQ1FO2aERBZZMMpyuxRbyQx0bSJ00TEpOsZ1Q";
-console.log("PUBLIC_STRIPE_KEY", env.NEXT_PUBLIC_STRIPE_KEY);
 
 const stripePromise = loadStripe(apiKey);
 

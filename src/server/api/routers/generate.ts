@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
@@ -47,8 +44,6 @@ export const generateRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      console.log("we are here", input);
-
       const { count } = await ctx.db.user.updateMany({
         where: {
           id: ctx.session.user.id,
