@@ -4,9 +4,12 @@ import { useState, type ChangeEvent, type FormEvent } from "react";
 import { Button } from "~/components/Button";
 import { FormGroup } from "~/components/FormGroup";
 import { Input } from "~/components/Input";
+import { useBuyCredits } from "~/hooks/useBuyCredits";
 import { api } from "~/utils/api";
 
 export default function Generate() {
+  const { buyCredits } = useBuyCredits();
+
   const [form, setForm] = useState({
     prompt: "",
   });
@@ -42,13 +45,22 @@ export default function Generate() {
   return (
     <main className=" flex min-h-screen flex-col items-center justify-center">
       {isLoggedIn ? (
-        <Button
-          onClick={() => {
-            signOut().catch(console.error);
-          }}
-        >
-          Log out
-        </Button>
+        <div className="flex flex-col gap-4">
+          <Button
+            onClick={() => {
+              signOut().catch(console.error);
+            }}
+          >
+            Log out
+          </Button>
+          <Button
+            onClick={() => {
+              buyCredits().catch(console.error);
+            }}
+          >
+            Buy Credits
+          </Button>
+        </div>
       ) : (
         <Button
           onClick={() => {
